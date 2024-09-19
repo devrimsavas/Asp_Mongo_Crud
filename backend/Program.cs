@@ -99,6 +99,7 @@ app.MapGet("/highhp/{minHP}", (MongoDbService mongoDbService, int minHP) =>
 
 
 app.Run();
+//end of routes 
 
 
 //mongo service Class 
@@ -198,6 +199,26 @@ public class MongoDbService
         }
 
         return records;
+    }
+
+    public List<CarRecord> GetCarsByName(string carName)
+    {
+        var filter = Builders<BsonDocument>.Filter.Eq("Type", carName);
+        var documents = _collection.Find(filter).ToList();
+        var records = new List<CarRecord>(); //create an empty list of records now fill it 
+        foreach (var doc in documents)
+        {
+            records.Add(new CarRecord
+            {
+                Id = doc["_id"]?.ToString() ?? "",
+                type = doc["type"]?.ToString() ?? "unknown",
+                HP = doc["HP"].ToInt32(),
+                HPl100 = doc["HPl100"].ToDouble()
+
+            });
+        }
+        return records;
+
     }
 
 
