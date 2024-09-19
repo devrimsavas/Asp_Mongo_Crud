@@ -1,0 +1,20 @@
+
+//this is a sample file for appsettings.json 
+
+// add your connection string to appsettings.json 
+
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+
+  "MongoDB": {
+    "ConnectionString": "mongodb+srv://<your-username>:<your-password>@<your-cluster>.mongodb.net/?retryWrites=true&w=majority&appName=<your-appname>",
+    "DatabaseName": "<your-database>"
+  },
+  "AllowedHosts": "*"
+}
