@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using Amazon.Runtime.Internal;
 using DnsClient.Protocol;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
+using Microsoft.AspNetCore.SignalR.Protocol;
 using Microsoft.Extensions.Primitives;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.IdGenerators;
@@ -47,6 +48,16 @@ app.MapGet("/showrecords", (MongoDbService mongoDbService) =>
 
     var records = mongoDbService.GetaAllRecords();
     return Results.Ok(records);
+
+});
+
+//get count of document 
+app.MapGet("/countdocument", (MongoDbService mongoDbService) =>
+{
+    var countDocument = mongoDbService.GetDocumentCount();
+    var distinctHP = mongoDbService.GetDistinct("HP");
+
+    return Results.Ok(new { documentCount = countDocument, distinctHP = distinctHP });
 
 });
 
@@ -229,8 +240,22 @@ public class MongoDbService
 
     }
 
+    public long GetDocumentCount()
+    {
+        return _collection.CountDocuments(new BsonDocument());
+    }
 
+    public List<int> GetDistinct(string distinctField)
+
+    {
+
+        var values = _collection.Distinct<int>(distinctField, new BsonDocument()).ToList();
+        return values;
+    }
 }
+
+
+
 
 
 //Car Record it is properties 
