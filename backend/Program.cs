@@ -95,6 +95,14 @@ app.MapGet("/highhp/{minHP}", (MongoDbService mongoDbService, int minHP) =>
     return Results.Ok(cars);
 });
 
+//Name filter 
+
+app.MapGet("/getbytype/{type}", (MongoDbService mongoDbService, string type) =>
+{
+    var cars = mongoDbService.GetCarsByName(type);
+    return Results.Ok(cars);
+});
+
 
 
 
@@ -200,10 +208,10 @@ public class MongoDbService
 
         return records;
     }
-
+    //get cars by Car Name 
     public List<CarRecord> GetCarsByName(string carName)
     {
-        var filter = Builders<BsonDocument>.Filter.Eq("Type", carName);
+        var filter = Builders<BsonDocument>.Filter.Regex("type", new BsonRegularExpression(carName, "i"));  //regex search 
         var documents = _collection.Find(filter).ToList();
         var records = new List<CarRecord>(); //create an empty list of records now fill it 
         foreach (var doc in documents)

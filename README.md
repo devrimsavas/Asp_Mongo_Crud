@@ -86,6 +86,16 @@ Before running the application, make sure you have the following installed:
   }
   ```
 
+## Mongosh
+
+here some CLI commands
+
+```bash
+\\get all type "mercedes"
+db.cars.find({type: /mercedes/i })
+
+```
+
 ## Additional Notes
 
 - The project uses `CORS` to allow requests from any origin.
